@@ -4,38 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supportify - Customer Support Chatbot</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #007bff;
+            --primary-color: #4a6bff;
             --secondary-color: #6c757d;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
+            --background-color: #f8f9fa;
+            --chat-bg: #ffffff;
+            --user-message-bg: #e3f2fd;
+            --bot-message-bg: #f1f1f1;
+            --shadow-color: rgba(0, 0, 0, 0.1);
         }
 
         body {
-            background-color: #f0f2f5;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), #6a5acd);
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.5rem;
         }
 
         .chat-container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: white;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            height: calc(100vh - 120px);
+        }
+
+        .chat-box {
+            background-color: var(--chat-bg);
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px var(--shadow-color);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 65%;
+            min-height: 500px;
+            margin-bottom: 1rem;
+            width: 100%;
         }
 
         .chat-header {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), #6a5acd);
             color: white;
-            padding: 20px;
-            border-radius: 15px 15px 0 0;
+            padding: 1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 1rem;
         }
 
         .chat-header i {
@@ -43,19 +72,20 @@
         }
 
         .chat-messages {
-            height: 500px;
+            flex: 1;
             overflow-y: auto;
-            padding: 20px;
-            background: #f8f9fa;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .message {
-            margin-bottom: 15px;
-            padding: 12px 15px;
+            max-width: 80%;
+            padding: 1rem;
             border-radius: 15px;
-            max-width: 70%;
             position: relative;
-            animation: fadeIn 0.3s ease-in-out;
+            animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
@@ -64,227 +94,398 @@
         }
 
         .user-message {
-            background: var(--primary-color);
-            color: white;
-            margin-left: auto;
+            background-color: var(--user-message-bg);
+            align-self: flex-end;
             border-bottom-right-radius: 5px;
         }
 
         .bot-message {
-            background: white;
-            color: var(--dark-color);
+            background-color: var(--bot-message-bg);
+            align-self: flex-start;
             border-bottom-left-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .typing-indicator {
             display: flex;
-            gap: 5px;
-            padding: 10px 15px;
-            background: white;
+            gap: 0.5rem;
+            padding: 1rem;
+            background-color: var(--bot-message-bg);
             border-radius: 15px;
-            width: fit-content;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            align-self: flex-start;
+            max-width: 80%;
         }
 
         .typing-indicator span {
-            height: 8px;
             width: 8px;
-            background: var(--secondary-color);
+            height: 8px;
+            background-color: var(--secondary-color);
             border-radius: 50%;
-            display: inline-block;
             animation: typing 1s infinite;
         }
 
-        .typing-indicator span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .typing-indicator span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
 
         @keyframes typing {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
         }
 
-        .chat-input {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid #dee2e6;
+        .input-container {
+            padding: 1rem;
+            background-color: white;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
             display: flex;
-            gap: 10px;
+            gap: 1rem;
         }
 
-        .chat-input input {
+        .form-control {
             border-radius: 25px;
-            padding: 12px 20px;
-            border: 1px solid #dee2e6;
-            flex: 1;
+            padding: 0.75rem 1.25rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
 
-        .chat-input input:focus {
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(74, 107, 255, 0.25);
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-            outline: none;
         }
 
-        .chat-input button {
-            border-radius: 25px;
-            padding: 12px 25px;
-            background: var(--primary-color);
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #6a5acd);
             border: none;
-            color: white;
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
             transition: all 0.3s ease;
         }
 
-        .chat-input button:hover {
-            background: #0056b3;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .suggested-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            max-height: 25%;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .question-chip {
+            background-color: var(--user-message-bg);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            border: 1px solid rgba(74, 107, 255, 0.2);
+        }
+
+        .question-chip:hover {
+            background-color: var(--primary-color);
+            color: white;
             transform: translateY(-2px);
         }
 
-        .chat-input button:active {
-            transform: translateY(0);
+        .categories {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            height: 70px;
+            align-items: center;
+            width: 100%;
         }
 
-        .message-time {
-            font-size: 0.7rem;
-            opacity: 0.7;
-            margin-top: 5px;
-            text-align: right;
+        .category-btn {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            white-space: nowrap;
+            transition: all 0.3s ease;
         }
 
-        .bot-avatar {
-            width: 30px;
-            height: 30px;
+        .category-btn:hover, .category-btn.active {
             background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .scroll-to-bottom {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            margin-right: 10px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        .scroll-to-bottom.visible {
+            opacity: 1;
+        }
+
+        @media (max-width: 992px) {
+            .chat-container {
+                width: 100%;
+                max-width: 1000px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+                height: calc(100vh - 90px);
+                width: 100%;
+            }
+
+            .chat-box {
+                height: 60%;
+                min-height: 400px;
+            }
+
+            .suggested-questions {
+                max-height: 30%;
+            }
+
+            .categories {
+                height: 60px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .category-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="chat-container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-robot"></i> Supportify
+            </a>
+        </div>
+    </nav>
+
+    <div class="chat-container">
+        <div class="categories">
+            <button class="category-btn active" data-category="all">All Topics</button>
+            <button class="category-btn" data-category="shipping">Shipping</button>
+            <button class="category-btn" data-category="returns">Returns</button>
+            <button class="category-btn" data-category="account">Account</button>
+            <button class="category-btn" data-category="payment">Payment</button>
+            <button class="category-btn" data-category="support">Support</button>
+        </div>
+
+        <div class="chat-box">
             <div class="chat-header">
-                <div class="bot-avatar">
-                    <i class="fas fa-robot"></i>
+                <i class="fas fa-robot"></i>
+                <div>
+                    <h5 class="mb-0">Support Assistant</h5>
+                    <small>Online</small>
                 </div>
-                <h3 class="mb-0">Supportify Chatbot</h3>
             </div>
+            
             <div class="chat-messages" id="chat-messages">
                 <div class="message bot-message">
-                    Hello! I'm your customer support assistant. How can I help you today?
-                    <div class="message-time">Just now</div>
+                    Hello! I'm your support assistant. How can I help you today?
                 </div>
             </div>
-            <div class="chat-input">
-                <input type="text" id="user-input" class="form-control" placeholder="Type your message...">
-                <button type="submit" class="btn btn-primary" id="send-button">
+
+            <div class="input-container">
+                <input type="text" class="form-control" id="user-input" placeholder="Type your message here...">
+                <button class="btn btn-primary" id="send-button">
                     <i class="fas fa-paper-plane"></i>
                 </button>
             </div>
         </div>
+
+        <div class="suggested-questions">
+            <div class="question-chip">What are your business hours?</div>
+            <div class="question-chip">How do I track my order?</div>
+            <div class="question-chip">What's your return policy?</div>
+            <div class="question-chip">How do I create an account?</div>
+        </div>
+
+        <div class="scroll-to-bottom" id="scroll-to-bottom">
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const chatForm = document.getElementById('chat-form');
-        const userInput = document.getElementById('user-input');
-        const sendButton = document.getElementById('send-button');
-        const chatMessages = document.getElementById('chat-messages');
-
-        function addMessage(text, className) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${className}`;
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chat-messages');
+            const userInput = document.getElementById('user-input');
+            const sendButton = document.getElementById('send-button');
+            const scrollToBottom = document.getElementById('scroll-to-bottom');
+            const questionChips = document.querySelectorAll('.question-chip');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const suggestedQuestions = document.querySelector('.suggested-questions');
             
-            const messageContent = document.createElement('div');
-            messageContent.textContent = text;
-            messageDiv.appendChild(messageContent);
-            
-            const timeDiv = document.createElement('div');
-            timeDiv.className = 'message-time';
-            timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            messageDiv.appendChild(timeDiv);
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+            // Category-specific questions
+            const categoryQuestions = {
+                'all': [
+                    'What are your business hours?',
+                    'How do I track my order?',
+                    'What\'s your return policy?',
+                    'How do I create an account?',
+                    'What payment methods do you accept?',
+                    'How do I contact support?'
+                ],
+                'shipping': [
+                    'When will my order arrive?',
+                    'How do I track my order?',
+                    'What are your shipping rates?',
+                    'Do you offer free shipping?',
+                    'Do you ship internationally?'
+                ],
+                'returns': [
+                    'What\'s your return policy?',
+                    'How do I return an item?',
+                    'How long do returns take?',
+                    'Do I need to pay for return shipping?',
+                    'Can I return a gift?'
+                ],
+                'account': [
+                    'How do I create an account?',
+                    'How do I reset my password?',
+                    'How do I update my email?',
+                    'How do I delete my account?',
+                    'How do I update my profile?'
+                ],
+                'payment': [
+                    'What payment methods do you accept?',
+                    'Is my payment secure?',
+                    'Can I use multiple payment methods?',
+                    'Do you accept PayPal?',
+                    'Do you accept Apple Pay?'
+                ],
+                'support': [
+                    'How do I contact support?',
+                    'What are your business hours?',
+                    'Do you have a phone number?',
+                    'How do I get help?',
+                    'Can I speak to a human?'
+                ]
+            };
 
-        function showTypingIndicator() {
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'typing-indicator';
-            typingDiv.id = 'typing-indicator';
-            typingDiv.innerHTML = '<span></span><span></span><span></span>';
-            chatMessages.appendChild(typingDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const typingIndicator = document.getElementById('typing-indicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
+            // Update suggested questions based on category
+            function updateSuggestedQuestions(category) {
+                suggestedQuestions.innerHTML = '';
+                const questions = categoryQuestions[category];
+                questions.forEach(question => {
+                    const chip = document.createElement('div');
+                    chip.className = 'question-chip';
+                    chip.textContent = question;
+                    chip.addEventListener('click', () => {
+                        userInput.value = question;
+                        sendMessage();
+                    });
+                    suggestedQuestions.appendChild(chip);
+                });
             }
-        }
 
-        async function sendMessage() {
-            const message = userInput.value.trim();
-            if (message) {
-                addMessage(message, 'user-message');
-                userInput.value = '';
-                showTypingIndicator();
+            // Handle category button clicks
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    // Update suggested questions
+                    updateSuggestedQuestions(button.dataset.category);
+                });
+            });
 
-                try {
-                    const response = await fetch('/get_response', {
+            // Initialize with 'all' category
+            updateSuggestedQuestions('all');
+
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message) {
+                    addMessage(message, 'user');
+                    userInput.value = '';
+                    showTypingIndicator();
+                    
+                    fetch('/get_response', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Accept': 'application/json'
                         },
                         body: JSON.stringify({ message: message })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        removeTypingIndicator();
+                        addMessage(data.response, 'bot');
+                    })
+                    .catch(error => {
+                        removeTypingIndicator();
+                        addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+                        console.error('Error:', error);
                     });
-                    
-                    const data = await response.json();
-                    removeTypingIndicator();
-                    
-                    let botResponse = data.response;
-                    try {
-                        const parsedResponse = JSON.parse(botResponse);
-                        botResponse = parsedResponse.response || botResponse;
-                    } catch (e) {
-                        // If parsing fails, use the response as is
-                    }
-                    addMessage(botResponse, 'bot-message');
-                } catch (error) {
-                    removeTypingIndicator();
-                    console.error('Error:', error);
-                    addMessage('Sorry, I encountered an error. Please try again.', 'bot-message');
                 }
             }
-        }
 
-        // Handle form submission
-        document.querySelector('.chat-input').addEventListener('submit', (e) => {
-            e.preventDefault();
-            sendMessage();
-        });
-
-        // Handle send button click
-        sendButton.addEventListener('click', sendMessage);
-
-        // Handle Enter key press
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                sendMessage();
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+
+            function showTypingIndicator() {
+                const indicator = document.createElement('div');
+                indicator.className = 'typing-indicator';
+                indicator.innerHTML = '<span></span><span></span><span></span>';
+                chatMessages.appendChild(indicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function removeTypingIndicator() {
+                const indicator = document.querySelector('.typing-indicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            }
+
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
         });
     </script>
 </body>
+</html>
 </html>
