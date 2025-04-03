@@ -1,41 +1,73 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template_string
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import string
 
 app = Flask(__name__)
 
-# Sample responses
+# Download required NLTK data
+nltk.download('punkt')
+nltk.download('stopwords')
+
+# Predefined responses for common customer queries
 responses = {
-    "hello": "Hello! How can I help you today?",
-    "pricing": "You can check our pricing details on our website.",
-    "refund": "Refunds are processed within 5-7 business days.",
-    "support": "Our support team is available 24/7. How can we assist you?",
-    "bye": "Goodbye! Have a great day!",
+    "greeting": "Hello! How can I assist you today?",
+    "order_status": "Could you please provide your order number so I can check the status?",
+    "shipping": "Shipping usually takes 3-5 business days. Would you like to track your package?",
+    "return": "To process a return, please provide your order number and reason for return.",
+    "hours": "Our customer support is available 24/7!",
+    "default": "I'm sorry, I didn't quite understand that. How can I help you?"
 }
 
-# Preprocess input (tokenization + removing stopwords)
-def preprocess(text):
-    nltk.download("punkt")
-    nltk.download("stopwords")
-    stop_words = set(stopwords.words("english"))
-    words = word_tokenize(text.lower())
-    return [word for word in words if word.isalnum() and word not in stop_words]
+def classify_intent(user_input):
+    tokens = word_tokenize(user_input.lower())
+    stop_words = set(stopwords.words('english') + list(string.punctuation))
+    filtered_tokens = [token for token in tokens if token not in stop_words]
+    
+    if any(word in filtered_tokens for word in ['hi', 'hello', 'hey']):
+        return "greeting"
+    elif any(word in filtered_tokens for word in ['order', 'status', 'where']):
+        return "order_status"
+    elif any(word in filtered_tokens for word in ['shipping', 'delivery', 'track']):
+        return "shipping"
+    elif any(word in filtered_tokens for word in ['return', 'refund', 'exchange']):
+        return "return"
+    elif any(word in filtered_tokens for word in ['hours', 'time', 'available']):
+        return "hours"
+    else:
+        return "default"
 
-# Function to generate response
 def get_response(user_input):
-    words = preprocess(user_input)
-    for word in words:
-        if word in responses:
-            return responses[word]
-    return "I'm sorry, I didn't understand. Can you please rephrase?"
+    intent = classify_intent(user_input)
+    return responses.get(intent, responses["default"])
 
-# API route for chatbot
-@app.route("/chat", methods=["POST"])
+@app.route('/')
+def home():
+    return "Customer Support Chatbot is running!"
+
+@app.route('/interface')
+def chat_interface():
+    try:
+        with open('index.html', 'r') as f:
+            html_content = f.read()
+        return render_template_string(html_content)
+    except FileNotFoundError:
+        return "Error: index.html not found in the same directory as app.py", 500
+
+@app.route('/chat', methods=['POST'])
 def chat():
-    user_message = request.json.get("message", "")
+    data = request.get_json()
+    print("Received data:", data)  # Debug print
+    user_message = data.get('message', '')
+    print("User message:", user_message)  # Debug print
+    
+    if not user_message:
+        return jsonify({'response': 'Please send a message!'}), 400
+    
     bot_response = get_response(user_message)
-    return jsonify({"response": bot_response})
+    print("Bot response:", bot_response)  # Debug print
+    return jsonify({'response': bot_response})
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
