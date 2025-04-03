@@ -1,58 +1,116 @@
 categories:
 - business
+- shipping
+- delivery
+- support
+
 conversations:
-# Existing conversations from your original file
+# Business Hours
 - - What are your business hours?
   - Our business hours are Monday to Friday, 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM. We are closed on Sundays.
 - - When are you open?
-  - We are open Monday to Friday from 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM.
+  - We are open Monday through Friday from 9:00 AM to 5:00 PM, and on Saturdays from 10:00 AM to 2:00 PM. We are closed on Sundays.
 - - What time do you close?
-  - We close at 5:00 PM on weekdays and 2:00 PM on Saturdays.
+  - We close at 5:00 PM on weekdays (Monday to Friday) and at 2:00 PM on Saturdays. We are closed on Sundays.
 - - Are you open on weekends?
-  - We are open on Saturdays from 10:00 AM to 2:00 PM, but closed on Sundays.
-- - What are your working hours?
-  - Our working hours are Monday to Friday, 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM.
+  - Yes, we are open on Saturdays from 10:00 AM to 2:00 PM. We are closed on Sundays.
+- - What are your opening hours?
+  - Our opening hours are Monday to Friday from 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM. We are closed on Sundays.
 - - When can I contact support?
   - You can contact our support team during our business hours: Monday to Friday, 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM.
-- - Do you have customer service on weekends?
-  - Our customer service is available on Saturdays from 10:00 AM to 2:00 PM, but we are closed on Sundays.
-- - How are you?
-  - I'm just a computer program, but I'm here to help you! How can I assist you today?
 
-# New FAQs from DynamicResponseAdapter
-- - How long does shipping take?
-  - Shipping usually takes 3-5 business days. You can track your order using the tracking number sent to your email.
+# Shipping and Delivery
+- - When will my shipment arrive?
+  - Your shipment will typically be delivered within 3-5 business days. You can track your order using the tracking number sent to your email.
 - - When will my delivery arrive?
-  - Shipping usually takes 3-5 business days. You can track your order using the tracking number sent to your email.
+  - Your delivery will typically arrive within 3-5 business days. You can track your order using the tracking number sent to your email.
+- - How long does shipping take?
+  - Shipping typically takes 3-5 business days. You can track your order using the tracking number sent to your email.
+- - When will my order arrive?
+  - Your order will typically arrive within 3-5 business days. You can track your order using the tracking number sent to your email.
+- - How do I track my order?
+  - You can track your order using the tracking number that was sent to your email. Visit our website's tracking page and enter the tracking number.
+- - Where is my order?
+  - You can track your order using the tracking number that was sent to your email. Visit our website's tracking page and enter the tracking number.
+- - What's the status of my order?
+  - You can check the status of your order by using the tracking number that was sent to your email. Visit our website's tracking page and enter the tracking number.
+- - Has my order shipped?
+  - You can check if your order has shipped by using the tracking number that was sent to your email. Visit our website's tracking page and enter the tracking number.
+
+# Payment
 - - What payment methods do you accept?
   - We accept credit cards, PayPal, and bank transfers. Please visit our payment page for more details.
 - - How do I pay?
   - We accept credit cards, PayPal, and bank transfers. Please visit our payment page for more details.
-- - How do I track my order?
-  - To track your order, please use the tracking number provided in your confirmation email on our website’s tracking page.
-- - What’s the status of my order?
-  - To track your order, please use the tracking number provided in your confirmation email on our website’s tracking page.
-- - What’s your return policy?
+- - Do you accept credit cards?
+  - Yes, we accept credit cards, PayPal, and bank transfers. Please visit our payment page for more details.
+
+# Returns and Refunds
+- - What's your return policy?
   - We offer a 30-day return policy for unused items with a receipt. Please contact support to initiate a return.
 - - How do I get a refund?
   - We offer a 30-day return policy for unused items with a receipt. Please contact support to initiate a return.
+- - Can I return my order?
+  - Yes, we offer a 30-day return policy for unused items with a receipt. Please contact support to initiate a return.
+
+# Account Management
 - - How do I delete my account?
   - To delete your account, please log in and go to Account Settings, or contact support for assistance.
 - - Can I close my account?
   - To delete your account, please log in and go to Account Settings, or contact support for assistance.
+
+# Discounts and Coupons
 - - Do you have any discounts?
   - Check our promotions page for current discounts, or sign up for our newsletter to receive exclusive coupon codes!
 - - How do I use a coupon?
   - Check our promotions page for current discounts, or sign up for our newsletter to receive exclusive coupon codes!
+- - Are there any promotions?
+  - Check our promotions page for current discounts, or sign up for our newsletter to receive exclusive coupon codes!
+
+# Contact Information
 - - How do I contact you?
   - You can reach us at support@example.com or call us at 123-456-7890 during business hours.
 - - How can I reach support?
   - You can reach us at support@example.com or call us at 123-456-7890 during business hours.
+- - What's your phone number?
+  - You can reach us at 123-456-7890 during business hours.
+- - What's your email?
+  - You can reach us at support@example.com.
+
+# Product Availability
 - - Is this product available?
-  - Please check our website’s product catalog for current availability, or let me know which item you’re asking about!
+  - Please check our website's product catalog for current availability, or let me know which item you're asking about!
 - - Do you have [product] in stock?
-  - Please check our website’s product catalog for current availability, or let me know which item you’re asking about!
+  - Please check our website's product catalog for current availability, or let me know which item you're asking about!
+- - Is [product] available?
+  - Please check our website's product catalog for current availability, or let me know which item you're asking about!
+
+# Order Cancellation
 - - Can I cancel my order?
   - To cancel an order, please contact support within 24 hours of placing it. After that, it may already be processed.
 - - How do I cancel?
   - To cancel an order, please contact support within 24 hours of placing it. After that, it may already be processed.
+- - I want to cancel my order
+  - To cancel an order, please contact support within 24 hours of placing it. After that, it may already be processed.
+
+# Greetings
+- - Hello
+  - Hello! How can I help you today?
+- - Hi
+  - Hi there! How can I assist you today?
+- - Hey
+  - Hey! How can I help you today?
+- - Good morning
+  - Good morning! How can I help you today?
+- - Good afternoon
+  - Good afternoon! How can I help you today?
+- - Good evening
+  - Good evening! How can I help you today?
+- - How are you
+  - I'm doing well, thank you for asking! How can I help you today?
+- - How are you doing
+  - I'm doing well, thank you for asking! How can I help you today?
+- - What's up
+  - Not much, just here to help! What can I do for you today?
+- - What's new
+  - Not much, just here to help! What can I do for you today?
