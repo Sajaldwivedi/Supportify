@@ -42,7 +42,7 @@ A modern, AI-powered customer support chatbot built with Python, Flask, and Chat
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/supportify.git
+git clone https://github.com/Sajaldwivedi/supportify.git
 cd supportify
 ```
 
@@ -154,8 +154,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📞 Support
 
-For support, email support@example.com or open an issue in the repository.
+For support, email sajaldwivedi7872@gmail.com or open an issue in the repository.
 
 ---
 
-Made with ❤️ by [Your Name] 
+Made with ❤️
