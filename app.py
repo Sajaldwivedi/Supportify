@@ -1,73 +1,66 @@
-from flask import Flask, request, jsonify, render_template_string
+from flask import Flask, render_template, request
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
+import sqlite3
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-import string
 
-app = Flask(__name__)
-
-# Download required NLTK data
+# Download NLTK data (run once)
 nltk.download('punkt')
 nltk.download('stopwords')
 
-# Predefined responses for common customer queries
-responses = {
-    "greeting": "Hello! How can I assist you today?",
-    "order_status": "Could you please provide your order number so I can check the status?",
-    "shipping": "Shipping usually takes 3-5 business days. Would you like to track your package?",
-    "return": "To process a return, please provide your order number and reason for return.",
-    "hours": "Our customer support is available 24/7!",
-    "default": "I'm sorry, I didn't quite understand that. How can I help you?"
-}
+# Initialize Flask app
+app = Flask(__name__)
 
-def classify_intent(user_input):
-    tokens = word_tokenize(user_input.lower())
-    stop_words = set(stopwords.words('english') + list(string.punctuation))
-    filtered_tokens = [token for token in tokens if token not in stop_words]
-    
-    if any(word in filtered_tokens for word in ['hi', 'hello', 'hey']):
-        return "greeting"
-    elif any(word in filtered_tokens for word in ['order', 'status', 'where']):
-        return "order_status"
-    elif any(word in filtered_tokens for word in ['shipping', 'delivery', 'track']):
-        return "shipping"
-    elif any(word in filtered_tokens for word in ['return', 'refund', 'exchange']):
-        return "return"
-    elif any(word in filtered_tokens for word in ['hours', 'time', 'available']):
-        return "hours"
-    else:
-        return "default"
+# Initialize Chatbot
+chatbot = ChatBot(
+    'SupportBot',
+    storage_adapter='chatterbot.storage.SQLStorageAdapter',
+    database_uri='sqlite:///faq.db',
+    logic_adapters=[
+        'chatterbot.logic.BestMatch',
+        'chatterbot.logic.MathematicalEvaluation'
+    ]
+)
 
-def get_response(user_input):
-    intent = classify_intent(user_input)
-    return responses.get(intent, responses["default"])
+# Function to preprocess user input
+def preprocess_text(text):
+    tokens = word_tokenize(text.lower())
+    stop_words = set(stopwords.words('english'))
+    filtered_tokens = [word for word in tokens if word not in stop_words]
+    return ' '.join(filtered_tokens)
 
+# Function to log conversation in SQLite
+def log_conversation(user_input, bot_response):
+    conn = sqlite3.connect('faq.db')
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS conversations 
+                      (id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                       user_input TEXT, 
+                       bot_response TEXT, 
+                       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)''')
+    cursor.execute("INSERT INTO conversations (user_input, bot_response) VALUES (?, ?)", 
+                   (user_input, bot_response))
+    conn.commit()
+    conn.close()
+
+# Home route
 @app.route('/')
 def home():
-    return "Customer Support Chatbot is running!"
+    return render_template('index.html')
 
-@app.route('/interface')
-def chat_interface():
-    try:
-        with open('index.html', 'r') as f:
-            html_content = f.read()
-        return render_template_string(html_content)
-    except FileNotFoundError:
-        return "Error: index.html not found in the same directory as app.py", 500
-
-@app.route('/chat', methods=['POST'])
-def chat():
-    data = request.get_json()
-    print("Received data:", data)  # Debug print
-    user_message = data.get('message', '')
-    print("User message:", user_message)  # Debug print
+# Chat route
+@app.route('/get_response', methods=['POST'])
+def get_response():
+    user_input = request.form['message']
+    processed_input = preprocess_text(user_input)
+    bot_response = str(chatbot.get_response(processed_input))
     
-    if not user_message:
-        return jsonify({'response': 'Please send a message!'}), 400
+    # Log the conversation
+    log_conversation(user_input, bot_response)
     
-    bot_response = get_response(user_message)
-    print("Bot response:", bot_response)  # Debug print
-    return jsonify({'response': bot_response})
+    return bot_response
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True)
