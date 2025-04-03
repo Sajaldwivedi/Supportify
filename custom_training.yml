@@ -1,0 +1,58 @@
+categories:
+- business
+conversations:
+# Existing conversations from your original file
+- - What are your business hours?
+  - Our business hours are Monday to Friday, 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM. We are closed on Sundays.
+- - When are you open?
+  - We are open Monday to Friday from 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM.
+- - What time do you close?
+  - We close at 5:00 PM on weekdays and 2:00 PM on Saturdays.
+- - Are you open on weekends?
+  - We are open on Saturdays from 10:00 AM to 2:00 PM, but closed on Sundays.
+- - What are your working hours?
+  - Our working hours are Monday to Friday, 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM.
+- - When can I contact support?
+  - You can contact our support team during our business hours: Monday to Friday, 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM.
+- - Do you have customer service on weekends?
+  - Our customer service is available on Saturdays from 10:00 AM to 2:00 PM, but we are closed on Sundays.
+- - How are you?
+  - I'm just a computer program, but I'm here to help you! How can I assist you today?
+
+# New FAQs from DynamicResponseAdapter
+- - How long does shipping take?
+  - Shipping usually takes 3-5 business days. You can track your order using the tracking number sent to your email.
+- - When will my delivery arrive?
+  - Shipping usually takes 3-5 business days. You can track your order using the tracking number sent to your email.
+- - What payment methods do you accept?
+  - We accept credit cards, PayPal, and bank transfers. Please visit our payment page for more details.
+- - How do I pay?
+  - We accept credit cards, PayPal, and bank transfers. Please visit our payment page for more details.
+- - How do I track my order?
+  - To track your order, please use the tracking number provided in your confirmation email on our website’s tracking page.
+- - What’s the status of my order?
+  - To track your order, please use the tracking number provided in your confirmation email on our website’s tracking page.
+- - What’s your return policy?
+  - We offer a 30-day return policy for unused items with a receipt. Please contact support to initiate a return.
+- - How do I get a refund?
+  - We offer a 30-day return policy for unused items with a receipt. Please contact support to initiate a return.
+- - How do I delete my account?
+  - To delete your account, please log in and go to Account Settings, or contact support for assistance.
+- - Can I close my account?
+  - To delete your account, please log in and go to Account Settings, or contact support for assistance.
+- - Do you have any discounts?
+  - Check our promotions page for current discounts, or sign up for our newsletter to receive exclusive coupon codes!
+- - How do I use a coupon?
+  - Check our promotions page for current discounts, or sign up for our newsletter to receive exclusive coupon codes!
+- - How do I contact you?
+  - You can reach us at support@example.com or call us at 123-456-7890 during business hours.
+- - How can I reach support?
+  - You can reach us at support@example.com or call us at 123-456-7890 during business hours.
+- - Is this product available?
+  - Please check our website’s product catalog for current availability, or let me know which item you’re asking about!
+- - Do you have [product] in stock?
+  - Please check our website’s product catalog for current availability, or let me know which item you’re asking about!
+- - Can I cancel my order?
+  - To cancel an order, please contact support within 24 hours of placing it. After that, it may already be processed.
+- - How do I cancel?
+  - To cancel an order, please contact support within 24 hours of placing it. After that, it may already be processed.
