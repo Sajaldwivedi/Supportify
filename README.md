@@ -156,6 +156,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For support, email sajaldwivedi7872@gmail.com or open an issue in the repository.
 
----
+
 
 Made with ❤️
